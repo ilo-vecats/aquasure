@@ -1,41 +1,9 @@
 require('dotenv').config();
-const express = require('express');
-const connectDB = require('./config/db');
-const cors = require('cors');
+const app = require('./app');
 
-const app = express();
-
-// Connect to MongoDB
-connectDB();
-
-// Middleware
-// CORS configuration - allow all origins for free tier deployment
-app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
-  credentials: true
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Routes
-app.use('/api/samples', require('./routes/samples'));
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/spc', require('./routes/spc'));
-app.use('/api/qc-tools', require('./routes/qcTools'));
-app.use('/api/qms', require('./routes/qms'));
-app.use('/api/improvement', require('./routes/improvement'));
-app.use('/api/suppliers', require('./routes/suppliers'));
-app.use('/api/feedback', require('./routes/feedback'));
-app.use('/api/predictions', require('./routes/predictions'));
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'AquaSure API is running' });
-});
-
-// Root endpoint
+// Root endpoint for local dev convenience
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'AquaSure API - Drinking Water Quality Check System',
     version: '1.0.0',
     endpoints: {
@@ -51,4 +19,3 @@ app.listen(PORT, () => {
   console.log(`🚀 AquaSure Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
-
