@@ -79,8 +79,48 @@ exports.createSample = async (req, res) => {
       tds: parseFloat(body.tds),
       turbidity: parseFloat(body.turbidity),
       chlorine: parseFloat(body.chlorine),
-      temperature: body.temperature ? parseFloat(body.temperature) : undefined
+      temperature: body.temperature ? parseFloat(body.temperature) : undefined,
+      compliance: {
+        isCompliant: true,
+        nonCompliantParams: [],
+        deviationSeverity: 'none'
+      }
     });
+    
+    // Check compliance before saving
+    sample.compliance.nonCompliantParams = [];
+    
+    // pH check
+    if (sample.ph < 6.5 || sample.ph > 8.5) {
+      sample.compliance.nonCompliantParams.push('pH');
+    }
+    
+    // TDS check
+    if (sample.tds > 500) {
+      sample.compliance.nonCompliantParams.push('TDS');
+    }
+    
+    // Turbidity check
+    if (sample.turbidity > 5) {
+      sample.compliance.nonCompliantParams.push('Turbidity');
+    }
+    
+    // Chlorine check
+    if (sample.chlorine < 0.2 || sample.chlorine > 1.0) {
+      sample.compliance.nonCompliantParams.push('Chlorine');
+    }
+    
+    // Set compliance status
+    sample.compliance.isCompliant = sample.compliance.nonCompliantParams.length === 0;
+    
+    // Set deviation severity
+    if (sample.compliance.nonCompliantParams.length === 0) {
+      sample.compliance.deviationSeverity = 'none';
+    } else if (sample.compliance.nonCompliantParams.length > 2) {
+      sample.compliance.deviationSeverity = 'major';
+    } else {
+      sample.compliance.deviationSeverity = 'minor';
+    }
     
     await sample.save();
     
@@ -177,11 +217,123 @@ exports.updateSample = async (req, res) => {
   }
 };
 
+// Get verification criteria for a sample (TQM: Process controls)
+function getVerificationCriteria(sample) {
+  const criteria = {
+    canAutoVerify: false,
+    reasons: [],
+    warnings: [],
+    requirements: []
+  };
+
+  // Criteria 1: Compliance Status
+  if (sample.compliance && sample.compliance.isCompliant) {
+    criteria.reasons.push('Sample is compliant with all quality standards');
+    criteria.canAutoVerify = true;
+  } else {
+    criteria.warnings.push('Sample has non-compliant parameters: ' + 
+      (sample.compliance?.nonCompliantParams?.join(', ') || 'Unknown'));
+    criteria.requirements.push('Review non-compliant parameters before verification');
+  }
+
+  // Criteria 2: Quality Index Threshold
+  if (sample.qualityIndex >= 80) {
+    criteria.reasons.push('Quality Index ≥ 80 (Safe range)');
+    if (criteria.canAutoVerify) {
+      criteria.canAutoVerify = true;
+    }
+  } else if (sample.qualityIndex >= 50) {
+    criteria.warnings.push('Quality Index is borderline (50-79)');
+    criteria.requirements.push('Manual review recommended for borderline samples');
+  } else {
+    criteria.warnings.push('Quality Index < 50 (Unsafe)');
+    criteria.requirements.push('Mandatory manual review required for unsafe samples');
+    criteria.canAutoVerify = false;
+  }
+
+  // Criteria 3: Status Check
+  if (sample.status === 'Safe') {
+    criteria.reasons.push('Status: Safe');
+  } else if (sample.status === 'Borderline') {
+    criteria.warnings.push('Status: Borderline - requires review');
+    criteria.requirements.push('Verify all parameters are within acceptable limits');
+  } else if (sample.status === 'Unsafe') {
+    criteria.warnings.push('Status: Unsafe - cannot auto-verify');
+    criteria.requirements.push('Corrective actions must be taken before verification');
+    criteria.canAutoVerify = false;
+  }
+
+  // Criteria 4: Parameter Limits (WHO/BIS Standards)
+  const paramChecks = [];
+  
+  // pH: 6.5-8.5
+  if (sample.ph >= 6.5 && sample.ph <= 8.5) {
+    paramChecks.push({ param: 'pH', status: 'pass', value: sample.ph, limit: '6.5-8.5' });
+  } else {
+    paramChecks.push({ param: 'pH', status: 'fail', value: sample.ph, limit: '6.5-8.5' });
+    criteria.warnings.push(`pH (${sample.ph}) outside acceptable range (6.5-8.5)`);
+  }
+
+  // TDS: < 500 mg/L
+  if (sample.tds <= 500) {
+    paramChecks.push({ param: 'TDS', status: 'pass', value: sample.tds, limit: '< 500 mg/L' });
+  } else {
+    paramChecks.push({ param: 'TDS', status: 'fail', value: sample.tds, limit: '< 500 mg/L' });
+    criteria.warnings.push(`TDS (${sample.tds} mg/L) exceeds limit (500 mg/L)`);
+  }
+
+  // Turbidity: < 5 NTU (acceptable), < 1 NTU (ideal)
+  if (sample.turbidity <= 1) {
+    paramChecks.push({ param: 'Turbidity', status: 'pass', value: sample.turbidity, limit: '< 1 NTU (ideal)' });
+  } else if (sample.turbidity <= 5) {
+    paramChecks.push({ param: 'Turbidity', status: 'warning', value: sample.turbidity, limit: '< 5 NTU (acceptable)' });
+    criteria.warnings.push(`Turbidity (${sample.turbidity} NTU) above ideal but acceptable`);
+  } else {
+    paramChecks.push({ param: 'Turbidity', status: 'fail', value: sample.turbidity, limit: '< 5 NTU' });
+    criteria.warnings.push(`Turbidity (${sample.turbidity} NTU) exceeds acceptable limit`);
+  }
+
+  // Chlorine: 0.2-1.0 mg/L
+  if (sample.chlorine >= 0.2 && sample.chlorine <= 1.0) {
+    paramChecks.push({ param: 'Chlorine', status: 'pass', value: sample.chlorine, limit: '0.2-1.0 mg/L' });
+  } else {
+    paramChecks.push({ param: 'Chlorine', status: 'fail', value: sample.chlorine, limit: '0.2-1.0 mg/L' });
+    criteria.warnings.push(`Chlorine (${sample.chlorine} mg/L) outside acceptable range (0.2-1.0)`);
+  }
+
+  criteria.parameterChecks = paramChecks;
+
+  // Final determination
+  const allParamsPass = paramChecks.every(p => p.status === 'pass');
+  if (!allParamsPass) {
+    criteria.canAutoVerify = false;
+  }
+
+  return criteria;
+}
+
 // Verify sample (TQM: Audit trail)
 exports.verifySample = async (req, res) => {
   try {
     const { id } = req.params;
-    const { verified, verifiedBy } = req.body;
+    const { verified, verifiedBy, skipValidation } = req.body;
+    
+    const sample = await Sample.findById(id);
+    if (!sample) {
+      return res.status(404).json({ error: 'Sample not found' });
+    }
+
+    // Get verification criteria
+    const criteria = getVerificationCriteria(sample);
+    
+    // If verifying and not skipping validation, check criteria
+    if (verified && !skipValidation && !criteria.canAutoVerify) {
+      return res.status(400).json({ 
+        error: 'Sample does not meet verification criteria',
+        criteria: criteria,
+        message: 'Sample has warnings or requirements that must be addressed before verification'
+      });
+    }
     
     const update = {
       verified: verified || false,
@@ -189,12 +341,27 @@ exports.verifySample = async (req, res) => {
       verifiedBy: verified ? verifiedBy : null
     };
     
-    const sample = await Sample.findByIdAndUpdate(id, update, { new: true });
+    const updatedSample = await Sample.findByIdAndUpdate(id, update, { new: true });
+    
+    res.json({
+      ...updatedSample.toObject(),
+      verificationCriteria: criteria
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get verification criteria for a sample
+exports.getVerificationCriteria = async (req, res) => {
+  try {
+    const sample = await Sample.findById(req.params.id);
     if (!sample) {
       return res.status(404).json({ error: 'Sample not found' });
     }
     
-    res.json(sample);
+    const criteria = getVerificationCriteria(sample);
+    res.json(criteria);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

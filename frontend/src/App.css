@@ -5,14 +5,15 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-  color: #1a202c;
-  line-height: 1.6;
+  background: #f8fafc;
+  color: #0f172a;
+  line-height: 1.65;
+  font-size: 15px;
 }
 
 .App {
@@ -22,11 +23,14 @@ body {
 }
 
 .navbar {
-  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  background: #1e293b;
   color: white;
-  padding: 1.25rem 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border-bottom: 2px solid #3b82f6;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .nav-container {
@@ -39,18 +43,20 @@ body {
 }
 
 .nav-logo h1 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin: 0;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #60a5fa;
 }
 
 .nav-subtitle {
-  font-size: 0.875rem;
-  opacity: 0.95;
+  font-size: 0.8rem;
+  opacity: 0.8;
   display: block;
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
   font-weight: 400;
+  color: #cbd5e1;
 }
 
 .nav-links {
@@ -59,24 +65,42 @@ body {
 }
 
 .nav-links a {
-  color: white;
+  color: #e2e8f0;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
-  padding: 0.625rem 1.25rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  position: relative;
 }
 
 .nav-links a:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: #60a5fa;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 80%;
 }
 
 .main-content {
   flex: 1;
-  padding: 2.5rem 0;
-  min-height: calc(100vh - 80px);
+  padding: 2rem 0;
+  min-height: calc(100vh - 70px);
+  background: #f8fafc;
 }
 
 @media (max-width: 768px) {

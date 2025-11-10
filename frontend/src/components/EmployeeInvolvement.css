@@ -1,0 +1,426 @@
+.employee-involvement-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f8fafc;
+}
+
+.ei-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ei-header h1 {
+  color: #1e293b;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.ei-subtitle {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.ei-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #475569;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  background: #e2e8f0;
+}
+
+.tab-btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #2563eb;
+}
+
+.ei-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.principle-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.principle-card h3 {
+  color: #1e293b;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.principle-desc {
+  color: #475569;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.principle-impl {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.principle-impl strong {
+  color: #1e293b;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.principle-impl p {
+  color: #475569;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.economics-section {
+  margin-top: 2rem;
+}
+
+.economics-section h2 {
+  color: #1e293b;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #10b981;
+}
+
+.economics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.econ-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
+}
+
+.econ-card h3 {
+  color: #1e293b;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.econ-card ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  color: #475569;
+}
+
+.econ-card li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.quality-circles-section h2 {
+  color: #1e293b;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-desc {
+  color: #64748b;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.circles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.circle-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #8b5cf6;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.circle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.circle-header h3 {
+  color: #1e293b;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-active {
+  background: #d5f4e6;
+  color: #065f46;
+}
+
+.circle-objective {
+  color: #475569;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.circle-members {
+  margin-bottom: 1rem;
+}
+
+.circle-members strong {
+  color: #1e293b;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.circle-members ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.circle-members li {
+  color: #475569;
+  padding: 0.25rem 0;
+}
+
+.circle-stats {
+  display: flex;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  display: block;
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.new-circle-form {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 2px dashed #cbd5e1;
+}
+
+.new-circle-form h3 {
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-create {
+  padding: 0.75rem 2rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-create:hover {
+  background: #2563eb;
+}
+
+.improvement-section h2 {
+  color: #1e293b;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.improvement-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.link-card {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
+  text-align: center;
+}
+
+.link-card h3 {
+  color: #1e293b;
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.link-card p {
+  color: #475569;
+  margin-bottom: 1.5rem;
+}
+
+.btn-link {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: #10b981;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-link:hover {
+  background: #059669;
+}
+
+.structure-section h2 {
+  color: #1e293b;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.org-structure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.org-level {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+  width: 100%;
+  max-width: 600px;
+}
+
+.org-level h3 {
+  color: #1e293b;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.org-level ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  color: #475569;
+}
+
+.org-level li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.org-arrow {
+  font-size: 2rem;
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .employee-involvement-container {
+    padding: 1rem;
+  }
+
+  .ei-tabs {
+    flex-direction: column;
+  }
+
+  .principles-grid,
+  .economics-grid,
+  .circles-grid,
+  .improvement-links {
+    grid-template-columns: 1fr;
+  }
+
+  .org-structure {
+    align-items: stretch;
+  }
+}
+

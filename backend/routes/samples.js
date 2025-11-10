@@ -9,6 +9,7 @@ router.get('/stats', sampleController.getStatistics);
 router.get('/:id', sampleController.getSampleById);
 router.put('/:id', sampleController.updateSample);
 router.patch('/:id/verify', sampleController.verifySample);
+router.get('/:id/verification-criteria', sampleController.getVerificationCriteria);
 router.post('/:id/corrective-actions', sampleController.addCorrectiveAction);
 router.delete('/:id', sampleController.deleteSample);
 
