@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const API = axios.create({ 
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5001/api'
+const API = axios.create({
+  baseURL: process.env.REACT_APP_API_URL || 'https://aquasure-nqqg.onrender.com/api',
+  // Changed from localhost to your Render backend URL ☝️
 });
 
 // Add token to requests if available
@@ -14,4 +15,3 @@ API.interceptors.request.use((config) => {
 });
 
 export default API;
-
