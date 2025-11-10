@@ -9,7 +9,7 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: "https://aquasurefrontend-13yla4ihz-rishikadawra1104-8048s-projects.vercel.app/" || '*',
+  origin: "https://aquasure-frontend-td1u.onrender.com" || '*',
   credentials: true
 }));
 app.use(express.json());
